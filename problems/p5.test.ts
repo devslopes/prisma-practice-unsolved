@@ -5,10 +5,17 @@ import { clearDb, seedFixtures } from "../seed-helpers";
 import { getAllMoviesWithAverageScoreOverN } from "./p5";
 import { groupBy, map, pipe, reduce, sortBy, sumBy } from "remeda";
 import { StarRating } from "@prisma/client";
+import { readFile } from "fs/promises";
+import path from "path";
 
-describe("p4", () => {
+describe("p5", () => {
   beforeEach(async () => {
     await clearDb();
+  });
+
+  it("should use rawSQL and not the ORM", async () => {
+    const solution = await readFile(path.join(__dirname, "p5.ts"), "utf-8");
+    expect(solution.match(/prisma\.(user|starRating|movie)/)).toBeFalsy();
   });
 
   it("getAllMoviesWithAverageScoreOver3 should be a function", () => {

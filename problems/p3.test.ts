@@ -3,10 +3,17 @@ import { clearDb, seedFixtures } from "../seed-helpers";
 import { sumBy } from "remeda";
 import { getAverageUserAge } from "./p3";
 import { prisma } from "./prisma";
+import { readFile } from "fs/promises";
+import path from "path";
 
 describe("p3", () => {
   beforeEach(async () => {
     await clearDb();
+  });
+
+  it("should use rawSQL and not the ORM", async () => {
+    const solution = await readFile(path.join(__dirname, "p3.ts"), "utf-8");
+    expect(solution.match(/prisma\.(user|starRating|movie)/)).toBeFalsy();
   });
 
   it("getAverageUserAge should be a function", () => {

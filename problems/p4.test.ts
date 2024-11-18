@@ -4,10 +4,17 @@ import { filter, map, pipe, reverse, sortBy } from "remeda";
 import { getAllPG13Movies } from "./p4";
 import { Movie } from "@prisma/client";
 import { z } from "zod";
+import { readFile } from "fs/promises";
+import path from "path";
 
 describe("p4", () => {
   beforeEach(async () => {
     await clearDb();
+  });
+
+  it("should use rawSQL and not the ORM", async () => {
+    const solution = await readFile(path.join(__dirname, "p4.ts"), "utf-8");
+    expect(solution.match(/prisma\.(user|starRating|movie)/)).toBeFalsy();
   });
 
   it("getAllPG13Movies should be a function", () => {

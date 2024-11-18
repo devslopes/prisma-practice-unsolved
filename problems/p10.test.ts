@@ -3,11 +3,19 @@ import { clearDb, seedFixtures } from "../seed-helpers";
 import { deleteAllUsersWithAgeUnderN } from "./p10";
 import { prisma } from "./prisma";
 import { filter, pipe, sortBy } from "remeda";
+import { readFile } from "fs/promises";
+import path from "path";
 
 describe("p10", () => {
   beforeEach(async () => {
     await clearDb();
   });
+
+  it("should use rawSQL and not the ORM", async () => {
+    const solution = await readFile(path.join(__dirname, "p10.ts"), "utf-8");
+    expect(solution.match(/prisma\.(user|starRating|movie)/)).toBeFalsy();
+  });
+
   it("deletaAllUsersWithAgeUnderN should exist", () => {
     expect(deleteAllUsersWithAgeUnderN).toBeInstanceOf(Function);
   });
@@ -35,7 +43,6 @@ describe("p10", () => {
       sortBy((user) => user.age)
     );
 
-    console.log({ usersUnder20: usersNotUnder20, usersAfterMutation });
     expect(usersAfterMutation).toEqual(usersNotUnder20);
   });
 });

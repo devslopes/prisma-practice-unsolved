@@ -2,10 +2,17 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { clearDb, seedFixtures } from "../seed-helpers";
 import { findTheGrumpiestCriticId, findTheNicestCriticId } from "./p8";
+import { readFile } from "fs/promises";
+import path from "path";
 
 describe("p7", () => {
   beforeEach(async () => {
     await clearDb();
+  });
+
+  it("should use rawSQL and not the ORM", async () => {
+    const solution = await readFile(path.join(__dirname, "p8.ts"), "utf-8");
+    expect(solution.match(/prisma\.(user|starRating|movie)/)).toBeFalsy();
   });
 
   it("findGrumpiestCriticId should be a function", () => {

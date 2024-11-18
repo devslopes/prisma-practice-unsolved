@@ -3,7 +3,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["clientExtensions"]
+  previewFeatures = ["typedSql"]
 }
 
 datasource db {
@@ -22,9 +22,9 @@ model StarRating {
   id      Int   @id @default(autoincrement())
   score   Int // Should be 1 / 5
   userId  Int
-  user    User  @relation(references: [id], fields: [userId])
+  user    User  @relation(references: [id], fields: [userId], onDelete: Cascade)
   movieId Int
-  movie   Movie @relation(references: [id], fields: [movieId])
+  movie   Movie @relation(references: [id], fields: [movieId], onDelete: Cascade)
 }
 
 model Movie {

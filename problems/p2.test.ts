@@ -3,12 +3,18 @@ import { describe, expect, it, beforeEach } from "vitest";
 import { clearDb, seedFixtures } from "../seed-helpers";
 import { getNYoungestUsers } from "./p2";
 import { sortBy } from "remeda";
+import { readFile } from "fs/promises";
+import path from "path";
 
 describe("p2", () => {
   beforeEach(async () => {
     await clearDb();
   });
 
+  it("should use rawSQL and not the ORM", async () => {
+    const solution = await readFile(path.join(__dirname, "p2.ts"), "utf-8");
+    expect(solution.match(/prisma\.(user|starRating|movie)/)).toBeFalsy();
+  });
   it("getAllUsers should be a function", () => {
     expect(getNYoungestUsers).toBeInstanceOf(Function);
   });

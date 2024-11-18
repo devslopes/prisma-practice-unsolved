@@ -1,7 +1,6 @@
-import { groupBy, map, reduce, sumBy } from "remeda";
+import { getAllMoviesWithAverageScoreOverN as getAllMoviesWithAverageScoreOverNQuery } from "@prisma/client/sql";
 import { prisma } from "./prisma";
-import { StarRating } from "@prisma/client";
 
-// hint:find all stars with the movies "included" on, then good ol' javascript should finish the job
-// This one should require more javascript work than the previous ones
-export const getAllMoviesWithAverageScoreOverN = async (n: number) => {};
+export const getAllMoviesWithAverageScoreOverN = async (n: number) => {
+  return prisma.$queryRawTyped(getAllMoviesWithAverageScoreOverNQuery(n));
+};
